@@ -19,8 +19,8 @@ public class BoardDAO {
 
 		try {
 
-			Class.forName("oracle.jdbc.driver.OracleDriver"); // oracle.jdbc.driver.OracleDriver
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "manso", "1111"); // jdbc:oracle:thin:@localhost:1521:xe
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "user", "pw");
 			stm = conn.createStatement();
 			ret = stm.executeQuery(query);
 
