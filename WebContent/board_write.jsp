@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>* Bulletin Board - Write!</title>
 </head>
 <body>
-	<form action="./boardWrite.kh" method="post">
+	<form action="./boardWrite.do" method="post">
 		작성자 : <input type="text" name="writer"><br />
 		비밀번호 : <input type="password" name="password"><br />
 		제목 : <input type="text"	name="title"><br />

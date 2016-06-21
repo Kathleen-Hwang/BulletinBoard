@@ -13,6 +13,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<input type="button" name="write" OnClick="window.location='./board_write.jsp'"/>
 	<table width="100%" cellpadding="0" cellspacing="0" border="0">
 		<tr>
 			<td width="73">No.</td>

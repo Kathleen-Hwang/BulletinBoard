@@ -16,7 +16,7 @@ import com.github.kathleenhwang.model.BoardDTO;
 /**
  * Servlet implementation class FrontController
  */
-@WebServlet("/Front")
+@WebServlet("/")
 public class FrontController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -50,11 +50,23 @@ public class FrontController extends HttpServlet {
 
 	private void doProcess(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<BoardDTO> boardList = new BoardDAO().getBoardList();
 
-		request.setAttribute("boardList", boardList);
+		String uri = request.getRequestURI();
+		String conPath = request.getContextPath();
+		String command = uri.substring(conPath.length());
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/board_list.jsp");
+		Command cmd = null;
+		if (command.equals("/boardWrite.do")) {
+			System.out.println("boardWrite.do");
+			cmd = new WriteCommand();
+		} else {
+			System.out.println("boardList.do");
+			cmd = new ListCommand();
+		}
+		
+		String jspPage = cmd.execute(request, response);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher(jspPage);
 		dispatcher.forward(request, response);
 	}
 
