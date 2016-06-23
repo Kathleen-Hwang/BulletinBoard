@@ -8,11 +8,11 @@
 </head>
 <body>
 	<form action="./boardWrite.do" method="post">
-		작성자 : <input type="text" name="writer"><br />
-		비밀번호 : <input type="password" name="password"><br />
-		제목 : <input type="text"	name="title"><br />
-		내용 : <input type="text" name="contents"><br />
-		<input type="submit" value="등록"/>
+		* Writer : <input type="text" name="writer"><br />
+		* Password : <input type="password" name="password"><br />
+		* Title : <input type="text"	name="title"><br />
+		* Contents : <input type="text" name="contents"><br />
+		<input type="submit" value="Done"/>
 	</form>
 </body>
 </html>

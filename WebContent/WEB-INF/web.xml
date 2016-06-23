@@ -13,12 +13,14 @@
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
 
-<!-- 	<servlet>
+	<servlet>
 		<servlet-name>FrontController</servlet-name>
 		<servlet-class>com.github.kathleenhwang.controller.FrontController</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>FrontController</servlet-name>
-		<url-pattern>/</url-pattern>
-	</servlet-mapping> -->
+		<url-pattern>/FC</url-pattern>
+	</servlet-mapping>
+	
+	
 </web-app>

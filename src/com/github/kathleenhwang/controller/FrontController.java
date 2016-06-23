@@ -1,7 +1,6 @@
 package com.github.kathleenhwang.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,13 +9,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.github.kathleenhwang.model.BoardDAO;
-import com.github.kathleenhwang.model.BoardDTO;
-
 /**
  * Servlet implementation class FrontController
+ * 
+ * add Resource tag like below to use context pool in contex.xml
+ * <Resource auth="Container" driverClassName="oracle.jdbc.driver.OracleDriver"
+ * maxActive="50" maxWait="1000" name="jdbc/Oracle11g" password="user_password"
+ * type="javax.sql.DataSource" url="jdbc:oracle:thin:@localhost:1521:xe"
+ * username="user_name"/>
  */
-@WebServlet("/")
 public class FrontController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -63,7 +64,7 @@ public class FrontController extends HttpServlet {
 			System.out.println("boardList.do");
 			cmd = new ListCommand();
 		}
-		
+
 		String jspPage = cmd.execute(request, response);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher(jspPage);
