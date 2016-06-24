@@ -11,7 +11,7 @@ public class WriteCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 
-		BoardDAO.getInstance().writeOnBoard(request.getParameter("title"), request.getParameter("contents"),
+		BoardDAO.getInstance().write(request.getParameter("title"), request.getParameter("contents"),
 				request.getParameter("lastDate"), request.getParameter("writer"), request.getParameter("password"));
 		
 		return "/list.do";
