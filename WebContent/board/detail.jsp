@@ -17,10 +17,11 @@
 	%>
 	no : <%=item.getNo()%><br/>
 	title : <%=item.getTitle()%><br/>
+	contents : <%=item.getContents()%><br/>
 	writer : <%=item.getWriter()%><br/>
 	last date : <%=item.getLastDate()%><br/>
 	
-		<input type="button" name="modify" OnClick="window.location='./board/editAuth.jsp?no=<%=item.getNo()%>'"/>
+		<input type="button" name="modify" value="edit" OnClick="window.location='./board/editAuth.jsp?no=<%=item.getNo()%>'"/>
 	<%
 		}
 	%>

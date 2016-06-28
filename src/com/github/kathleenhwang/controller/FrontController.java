@@ -66,14 +66,10 @@ public class FrontController extends HttpServlet {
 		} else if (command.equals("/Detail.do")) {
 			cmd = new DetailCommand();
 		} else if (command.equals("/EditAuth.do")) {
-			System.out.println("EditAuth");
-
 			cmd = new EditAuthCommand();
 		} else if (command.equals("/Edit.do")) {
-			System.out.println("Edit...");
 			cmd = new EditCommand();
 		} else if (command.equals("/EditAction.do")) {
-			System.out.println("EditAction...");
 			cmd = new EditActionCommand();
 		} else {
 			cmd = new ListCommand();
