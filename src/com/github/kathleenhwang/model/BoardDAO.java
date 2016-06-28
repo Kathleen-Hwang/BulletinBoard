@@ -10,7 +10,6 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 public class BoardDAO {
-
 	private static BoardDAO instance;
 	private DataSource dataSource;
 
@@ -38,7 +37,7 @@ public class BoardDAO {
 		PreparedStatement stm = null;
 		ResultSet ret = null;
 
-		String query = "SELECT NO, TITLE, CONTENTS, LASTDATE, WRITER, PASSWORD FROM BOARD ORDER BY LASTDATE DESC";
+		String query = "SELECT NO, TITLE, CONTENTS, LASTDATE, WRITER, PASSWORD FROM BOARD ORDER BY NO DESC";
 
 		try {
 			conn = dataSource.getConnection();
@@ -111,20 +110,28 @@ public class BoardDAO {
 		return retValue;
 	}
 
-	public boolean modify(int no, final String title, final String contents, final String lastDate, final String writer,
+	public boolean modify(int no, final String title, final String contents, final String writer,
 			final String password) {
 		boolean retValue = false;
 
 		Connection con = null;
 		PreparedStatement stat = null;
-		String query = "UPDATE TITLE, CONTENTS, LASTDATE, WRITER, PASSWORD FROM BOARD WHERE NO = ?";
-		
+		String query = "UPDATE BOARD SET TITLE=?, CONTENTS=?, LASTDATE=sysdate, WRITER=?, PASSWORD=? WHERE NO = ?";
+
 		try {
 			con = dataSource.getConnection();
 			stat = con.prepareStatement(query);
-			stat.setInt(1, no);
+			
+			System.out.println(title);
+			
+			stat.setString(1, title);
+			stat.setString(2, contents);
+			stat.setString(3, writer);
+			stat.setString(4, password);
+			stat.setInt(5, no);
+
 			retValue = (0 < stat.executeUpdate());
-				
+
 		} catch (Exception e) {
 			System.out.println("msg : " + e.getMessage());
 		} finally {
@@ -139,7 +146,7 @@ public class BoardDAO {
 				System.out.println("msg : " + e.getMessage());
 			}
 		}
-		
+
 		return retValue;
 	}
 
@@ -175,18 +182,17 @@ public class BoardDAO {
 		return retValue;
 	}
 
-	public boolean isAuthenticated(int no, final String writer, final String password) {
+	public boolean isAuthenticated(int no, final String password) {
 		boolean retValue = false;
 
 		Connection con = null;
 		PreparedStatement stat = null;
-		String query = "SELECT PASSWORD FROM BOARD WHERE NO = ? AND WRITER = ?";
+		String query = "SELECT PASSWORD FROM BOARD WHERE NO = ?";
 		ResultSet set = null;
 		try {
 			con = dataSource.getConnection();
 			stat = con.prepareStatement(query);
 			stat.setInt(1, no);
-			stat.setString(2, password);
 
 			set = stat.executeQuery();
 
@@ -209,5 +215,51 @@ public class BoardDAO {
 		}
 
 		return retValue;
+	}
+
+	public BoardDTO getDetail(int no) {
+		BoardDTO item = null;
+
+		Connection conn = null;
+		PreparedStatement stm = null;
+		ResultSet ret = null;
+
+		String query = "SELECT NO, TITLE, CONTENTS, LASTDATE, WRITER, PASSWORD FROM BOARD WHERE NO = ?";
+
+		try {
+			conn = dataSource.getConnection();
+			stm = conn.prepareStatement(query);
+
+			stm.setInt(1, no);
+
+			ret = stm.executeQuery();
+
+			while (ret.next()) {
+				item = new BoardDTO();
+
+				item.setNo(ret.getString("NO"));
+				item.setTitle(ret.getString("TITLE"));
+				item.setContents(ret.getString("CONTENTS"));
+				item.setLastDate(ret.getString("LASTDATE"));
+				item.setWriter(ret.getString("WRITER"));
+				item.setPassword(ret.getString("PASSWORD"));
+			}
+
+		} catch (Exception e) {
+			System.out.println("msg : " + e.getMessage());
+		} finally {
+			try {
+				if (ret != null)
+					ret.close();
+				if (stm != null)
+					stm.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				System.out.println("msg : " + e.getMessage());
+			}
+		}
+
+		return item;
 	}
 }

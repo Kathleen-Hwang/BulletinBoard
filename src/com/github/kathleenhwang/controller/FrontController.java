@@ -46,22 +46,36 @@ public class FrontController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		request.setCharacterEncoding("UTF-8");
+		
 		doGet(request, response);
 	}
 
 	private void doProcess(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+	
 		String uri = request.getRequestURI();
 		String conPath = request.getContextPath();
 		String command = uri.substring(conPath.length());
 
+		System.out.println(">>> : " + command);
+
 		Command cmd = null;
-		if (command.equals("/boardWrite.do")) {
-			System.out.println("boardWrite.do");
+		if (command.equals("/Write.do")) {
 			cmd = new WriteCommand();
+		} else if (command.equals("/Detail.do")) {
+			cmd = new DetailCommand();
+		} else if (command.equals("/EditAuth.do")) {
+			System.out.println("EditAuth");
+
+			cmd = new EditAuthCommand();
+		} else if (command.equals("/Edit.do")) {
+			System.out.println("Edit...");
+			cmd = new EditCommand();
+		} else if (command.equals("/EditAction.do")) {
+			System.out.println("EditAction...");
+			cmd = new EditActionCommand();
 		} else {
-			System.out.println("boardList.do");
 			cmd = new ListCommand();
 		}
 

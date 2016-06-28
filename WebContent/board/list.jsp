@@ -13,7 +13,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<input type="button" name="write" OnClick="window.location='./board_write.jsp'"/>
+	<input type="button" name="write" OnClick="window.location='./board/write.jsp'"/>
 	<table width="100%" cellpadding="0" cellspacing="0" border="0">
 		<tr>
 			<td width="73">No.</td>
@@ -27,7 +27,7 @@
 		%>
 		<tr>
 			<td width="73"><%=item.getNo()%></td>
-			<td width="379"><%=item.getTitle()%></td>
+			<td width="379"><a href="./Detail.do?no=<%=item.getNo()%>"><%=item.getTitle()%></a></td>
 			<td width="73"><%=item.getWriter()%></td>
 			<td width="164"><%=item.getLastDate()%></td>
 		</tr>

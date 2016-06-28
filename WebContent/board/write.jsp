@@ -7,7 +7,7 @@
 <title>* Bulletin Board - Write!</title>
 </head>
 <body>
-	<form action="./boardWrite.do" method="post">
+	<form action="./Write.do" method="post">
 		* Writer : <input type="text" name="writer"><br />
 		* Password : <input type="password" name="password"><br />
 		* Title : <input type="text"	name="title"><br />
