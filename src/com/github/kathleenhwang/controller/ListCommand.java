@@ -12,7 +12,7 @@ public class ListCommand implements Command {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
-		List<BoardDTO> boardList = BoardDAO.getInstance().getBoardList();
+		List<BoardDTO> boardList = BoardDAO.getInstance().getBoardList(1, 2);
 
 		request.setAttribute("boardList", boardList);
 

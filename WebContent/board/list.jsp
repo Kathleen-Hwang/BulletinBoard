@@ -13,7 +13,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<input type="button" name="write" OnClick="window.location='./board/write.jsp'"/>
+	<input type="button" name="write"
+		OnClick="window.location='./board/write.jsp'" value="write" />
+	<input type="text" name="keyword" />
+	<input type="button" name="search"
+		OnClick="window.location='./search.do'" value="search" />
 	<table width="100%" cellpadding="0" cellspacing="0" border="0">
 		<tr>
 			<td width="73">No.</td>

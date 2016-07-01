@@ -9,6 +9,8 @@ import java.util.List;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import com.github.kathleenhwang.etc.Util;
+
 public class BoardDAO {
 	private static BoardDAO instance;
 	private DataSource dataSource;
@@ -30,49 +32,8 @@ public class BoardDAO {
 		}
 	}
 
-	public List<BoardDTO> getBoardList() {
-		List<BoardDTO> boardList = new ArrayList<BoardDTO>();
-
-		Connection conn = null;
-		PreparedStatement stm = null;
-		ResultSet ret = null;
-
-		String query = "SELECT NO, TITLE, CONTENTS, LASTDATE, WRITER, PASSWORD FROM BOARD ORDER BY NO DESC";
-
-		try {
-			conn = dataSource.getConnection();
-			stm = conn.prepareStatement(query);
-			ret = stm.executeQuery();
-
-			while (ret.next()) {
-				BoardDTO item = new BoardDTO();
-
-				item.setNo(ret.getString("NO"));
-				item.setTitle(ret.getString("TITLE"));
-				item.setContents(ret.getString("CONTENTS"));
-				item.setLastDate(ret.getString("LASTDATE"));
-				item.setWriter(ret.getString("WRITER"));
-				item.setPassword(ret.getString("PASSWORD"));
-
-				boardList.add(item);
-			}
-
-		} catch (Exception e) {
-			System.out.println("msg : " + e.getMessage());
-		} finally {
-			try {
-				if (ret != null)
-					ret.close();
-				if (stm != null)
-					stm.close();
-				if (conn != null)
-					conn.close();
-			} catch (Exception e) {
-				System.out.println("msg : " + e.getMessage());
-			}
-		}
-
-		return boardList;
+	public List<BoardDTO> getBoardList(int page, int limit) {
+		return getBoardList(page, limit, null);
 	}
 
 	public boolean write(final String title, final String contents, final String lastDate, final String writer,
@@ -121,9 +82,9 @@ public class BoardDAO {
 		try {
 			con = dataSource.getConnection();
 			stat = con.prepareStatement(query);
-			
+
 			System.out.println(title);
-			
+
 			stat.setString(1, title);
 			stat.setString(2, contents);
 			stat.setString(3, writer);
@@ -261,5 +222,69 @@ public class BoardDAO {
 		}
 
 		return item;
+	}
+
+	public List<BoardDTO> getBoardList(int page, int limit, final String keyword) {
+		List<BoardDTO> boardList = new ArrayList<BoardDTO>();
+
+		Connection conn = null;
+		PreparedStatement stm = null;
+		ResultSet ret = null;
+
+		StringBuilder query = new StringBuilder();
+		query.append("SELECT ROWNUM, NO, TITLE, CONTENTS, LASTDATE, WRITER, PASSWORD FROM BOARD");
+		query.append(" WHERE (ROWNUM >= ? AND ROWNUM < ?)");
+		if (Util.hasValue(keyword)) {
+			query.append(" AND (TITLE LIKE '%?%' OR CONTENTS LIKE '%?%')");
+		}
+		query.append(" ORDER BY NO DESC");
+
+		System.out.println(query.toString());
+
+		try {
+			conn = dataSource.getConnection();
+			stm = conn.prepareStatement(query.toString());
+
+			int startIndex = (page - 1) * limit + 1;
+			int endIndex = (page * limit) + 1;
+			stm.setInt(1, startIndex);
+			stm.setInt(2, endIndex);
+
+			if (Util.hasValue(keyword)) {
+				stm.setString(3, keyword);
+				stm.setString(4, keyword);
+			}
+
+			ret = stm.executeQuery();
+
+			while (ret.next()) {
+				BoardDTO item = new BoardDTO();
+
+				item.setNo(ret.getString("NO"));
+				item.setTitle(ret.getString("TITLE"));
+				item.setContents(ret.getString("CONTENTS"));
+				item.setLastDate(ret.getString("LASTDATE"));
+				item.setWriter(ret.getString("WRITER"));
+				item.setPassword(ret.getString("PASSWORD"));
+
+				boardList.add(item);
+			}
+
+		} catch (Exception e) {
+			System.out.println("msg : " + e.getMessage());
+		} finally {
+			try {
+				if (ret != null)
+					ret.close();
+				if (stm != null)
+					stm.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				System.out.println("msg : " + e.getMessage());
+			}
+		}
+
+		return boardList;
 	}
 }
